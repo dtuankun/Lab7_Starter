@@ -229,7 +229,7 @@ class RecipeExpand extends HTMLElement {
     const numStars = Math.round(ratingVal);
     if (ratingVal) {
       rating.innerHTML = `
-      <img src="/assets/images/icons/${numStars}-star.svg" alt="${numStars} stars">
+      <img src="assets/images/icons/${numStars}-star.svg" alt="${numStars} stars">
       <span>${ratingVal}</span>
       from
       `;
@@ -245,18 +245,22 @@ class RecipeExpand extends HTMLElement {
 
     // Set Ingredients
     const ingredients = getIngredients(data);
-    ingredients.forEach(ingredient => {
+    ingredients.forEach((ingredient) => {
       const listItem = document.createElement('li');
       listItem.innerHTML = ingredient;
-      this.shadowRoot.querySelector('.section--ingredients > ul').append(listItem);
+      this.shadowRoot
+        .querySelector('.section--ingredients > ul')
+        .append(listItem);
     });
 
     // Set Instructions
     const instructions = getInstructions(data);
-    instructions.forEach(instruction => {
+    instructions.forEach((instruction) => {
       const listItem = document.createElement('li');
       listItem.innerHTML = instruction;
-      this.shadowRoot.querySelector('.section--instructions > ol').append(listItem);
+      this.shadowRoot
+        .querySelector('.section--instructions > ol')
+        .append(listItem);
     });
   }
 
@@ -300,7 +304,7 @@ function getTitle(data) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'Recipe') {
         if (data['@graph'][i]['name']) return data['@graph'][i]['name'];
-      };
+      }
     }
   }
   return null;
@@ -337,14 +341,14 @@ function getYield(data) {
 function getCategories(data) {
   let categories = null;
   if (data.recipeCategory) {
-    categories = data.recipeCategory
+    categories = data.recipeCategory;
   } else if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'Recipe') {
         if (data['@graph'][i]['recipeCategory']) {
           categories = data['@graph'][i]['recipeCategory'];
         }
-      };
+      }
     }
   }
   if (Array.isArray(categories)) categories = categories.join(', ');
@@ -381,9 +385,11 @@ function getImage(data) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'ImageObject') {
         if (data['@graph'][i]['url']) return data['@graph'][i]['url'];
-        if (data['@graph'][i]['contentUrl']) return data['@graph'][i]['contentUrl'];
-        if (data['@graph'][i]['thumbnailUrl']) return data['@graph'][i]['thumbnailUrl'];
-      };
+        if (data['@graph'][i]['contentUrl'])
+          return data['@graph'][i]['contentUrl'];
+        if (data['@graph'][i]['thumbnailUrl'])
+          return data['@graph'][i]['thumbnailUrl'];
+      }
     }
   }
   return null;
@@ -398,9 +404,10 @@ function getUrl(data) {
   if (data.url) return data.url;
   if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') return data['@graph'][i]['@id'];
+      if (data['@graph'][i]['@type'] == 'Recipe')
+        return data['@graph'][i]['@id'];
     }
-  };
+  }
   return null;
 }
 
@@ -418,7 +425,7 @@ function getOrganization(data) {
         return data['@graph'][i].name;
       }
     }
-  };
+  }
   return null;
 }
 
@@ -461,7 +468,7 @@ function getIngredients(data) {
       return data.recipeIngredient.slit('. ');
     }
     return data.recipeIngredient;
-  };
+  }
   if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'Recipe') {
@@ -469,7 +476,7 @@ function getIngredients(data) {
           return data['@graph'][i]['recipeIngredient'].slit('. ');
         }
         return data['@graph'][i]['recipeIngredient'];
-      };
+      }
     }
   }
   return null;
@@ -487,7 +494,7 @@ function getInstructions(data) {
       return data.recipeInstructions.split('. ');
     }
     return data.recipeInstructions;
-  };
+  }
   if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'Recipe') {
@@ -496,16 +503,18 @@ function getInstructions(data) {
         }
         if (data['@graph'][i]['recipeInstructions'][0]['itemListElement']) {
           const instructionArr = [];
-          data['@graph'][i]['recipeInstructions'].forEach(instrObj => {
-            instrObj.itemListElement.forEach(instruction => {
+          data['@graph'][i]['recipeInstructions'].forEach((instrObj) => {
+            instrObj.itemListElement.forEach((instruction) => {
               instructionArr.push(instruction.text);
             });
           });
           return instructionArr;
         } else {
-          return data['@graph'][i]['recipeInstructions'].map(instr => instr.text);
+          return data['@graph'][i]['recipeInstructions'].map(
+            (instr) => instr.text
+          );
         }
-      };
+      }
     }
   }
   return null;

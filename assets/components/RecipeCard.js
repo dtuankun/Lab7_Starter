@@ -133,7 +133,7 @@ class RecipeCard extends HTMLElement {
     if (ratingVal) {
       rating.innerHTML = `
         <span>${ratingVal}</span>
-        <img src="/assets/images/icons/${numStars}-star.svg" alt="${numStars} stars">
+        <img src="assets/images/icons/${numStars}-star.svg" alt="${numStars} stars">
       `;
       if (ratingTotal) {
         rating.innerHTML += `<span>(${ratingTotal})</span>`;
@@ -206,7 +206,7 @@ function getTitle(data) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'Recipe') {
         if (data['@graph'][i]['name']) return data['@graph'][i]['name'];
-      };
+      }
     }
   }
   return null;
@@ -225,9 +225,11 @@ function getImage(data) {
     for (let i = 0; i < data['@graph'].length; i++) {
       if (data['@graph'][i]['@type'] == 'ImageObject') {
         if (data['@graph'][i]['url']) return data['@graph'][i]['url'];
-        if (data['@graph'][i]['contentUrl']) return data['@graph'][i]['contentUrl'];
-        if (data['@graph'][i]['thumbnailUrl']) return data['@graph'][i]['thumbnailUrl'];
-      };
+        if (data['@graph'][i]['contentUrl'])
+          return data['@graph'][i]['contentUrl'];
+        if (data['@graph'][i]['thumbnailUrl'])
+          return data['@graph'][i]['thumbnailUrl'];
+      }
     }
   }
   return null;
@@ -242,9 +244,10 @@ function getUrl(data) {
   if (data.url) return data.url;
   if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') return data['@graph'][i]['@id'];
+      if (data['@graph'][i]['@type'] == 'Recipe')
+        return data['@graph'][i]['@id'];
     }
-  };
+  }
   return null;
 }
 
@@ -262,7 +265,7 @@ function getOrganization(data) {
         return data['@graph'][i].name;
       }
     }
-  };
+  }
   return null;
 }
 
@@ -310,14 +313,14 @@ function createIngredientList(ingredientArr) {
    * (sometimes there isn't, so this would fail on something like '2 apples' or 'Some olive oil').
    * For the purposes of this lab you don't have to worry about those cases.
    * @param {String} ingredient the raw ingredient string you'd like to process
-   * @return {String} the ingredient without the measurement & quantity 
+   * @return {String} the ingredient without the measurement & quantity
    * (e.g. '1 cup flour' returns 'flour')
    */
   function _removeQtyAndMeasurement(ingredient) {
     return ingredient.split(' ').splice(2).join(' ');
   }
 
-  ingredientArr.forEach(ingredient => {
+  ingredientArr.forEach((ingredient) => {
     ingredient = _removeQtyAndMeasurement(ingredient);
     finalIngredientList += `${ingredient}, `;
   });
