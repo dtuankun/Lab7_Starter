@@ -22,12 +22,15 @@ const urlsToCache = [
   'https://introweb.tech/assets/json/stuffing.json',
   'https://introweb.tech/assets/json/turkey.json',
   'https://introweb.tech/assets/json/pumpkinPie.json',
-  // 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190807-ghost-cookies-0031-landscape-pf-1566483952.jpg',
-  // 'https://www.recipetineats.com/wp-content/uploads/2020/08/My-best-Vanilla-Cake_9.jpg',
-  // 'https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookies-recipe-1.jpg',
-  // 'https://www.howsweeteats.com/wp-content/uploads/2020/11/best-stuffing-12.jpg',
-  // 'https://tastesbetterfromscratch.com/wp-content/uploads/2017/07/Easy-No-Fuss-Thanksgiving-Turkey-14.jpg',
-  // 'https://cdn.sallysbakingaddiction.com/wp-content/uploads/2014/10/sallys-baking-addiction-pumpkin-pie-2',
+];
+
+const urlsToPrefetch = [
+  'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190807-ghost-cookies-0031-landscape-pf-1566483952.jpg',
+  'https://www.recipetineats.com/wp-content/uploads/2020/08/My-best-Vanilla-Cake_9.jpg',
+  'https://joyfoodsunshine.com/wp-content/uploads/2018/02/best-chocolate-chip-cookies-recipe-1.jpg',
+  'https://www.howsweeteats.com/wp-content/uploads/2020/11/best-stuffing-12.jpg',
+  'https://tastesbetterfromscratch.com/wp-content/uploads/2017/07/Easy-No-Fuss-Thanksgiving-Turkey-14.jpg',
+  'https://cdn.sallysbakingaddiction.com/wp-content/uploads/2014/10/sallys-baking-addiction-pumpkin-pie-2',
 ];
 
 // Once the service worker has been installed, feed it some initial URLs to cache
@@ -39,6 +42,9 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('Opened cache');
+      cache.addAll(
+        urlsToPrefetch.map((url) => new Request(url, { mode: 'no-cors' }))
+      );
       return cache.addAll(urlsToCache);
     })
   );
